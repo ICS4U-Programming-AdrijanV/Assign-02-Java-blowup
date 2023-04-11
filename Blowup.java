@@ -36,16 +36,22 @@ public final class Blowup {
             return 0;
         }
 
+        // Convert the string to an array of characters
+        char[] charArray = new char[str2.length()];
+        for (int counter = 0; counter < str2.length(); counter++) {
+            charArray[counter] = str2.charAt(counter);
+        }
+
         // Set the max run length and the current run length
         int maxRunLength = 1;
         int currentRunLength = 1;
 
         // Go through each character in the string starting from the second one
-        for (int counter = 1; counter < str2.length(); counter++) {
+        for (int counter = 1; counter < charArray.length; counter++) {
 
             // If the current character is the same as the previous one
             // add one to the current run length
-            if (str2.charAt(counter) == str2.charAt(counter - 1)) {
+            if (charArray[counter] == charArray[counter - 1]) {
                 currentRunLength++;
             } else {
 
