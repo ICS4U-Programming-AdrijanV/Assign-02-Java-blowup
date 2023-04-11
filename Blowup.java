@@ -1,7 +1,6 @@
 // Import
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -12,7 +11,7 @@ import java.util.Scanner;
 * @since   2023-04-10
 */
 
-public class Blowup {
+public final class Blowup {
 
     /**
      * This is a private constructor used to satisfy the style checker.
@@ -30,7 +29,7 @@ public class Blowup {
     * @param str2 //
     * @return MaxRunLength
     */
-    public static int MaxRun(String str2) {
+    public static int maxRun(String str2) {
 
         // In case of an empty string
         if (str2.length() == 0) {
@@ -58,15 +57,15 @@ public class Blowup {
             }
         }
 
-        // Update the maximum run length one last time (in case the string ended with a run)
+        // Update the max run length one last time
+        // in case the string ended with a run
         if (currentRunLength > maxRunLength) {
             maxRunLength = currentRunLength;
         }
 
-        // Return the maximum run length
+        // Return the max run length
         return maxRunLength;
     }
-
 
     /**
     * This is the blowup method.
@@ -74,21 +73,23 @@ public class Blowup {
     * @param str //
     * @return result
     */
-    public static String Blowup(String str) {
+    public static String blowup(String str) {
+        // Check if string is empty
+        if (str.length() == 0) {
+            return "";
+        }
 
         // create an array to store the result
-        // (maximum length is 10 times the input string length)
-        char[] result = new char[str.length() * 10];
+        final char[] result = new char[str.length() * 10];
 
         // initialize an index variable to keep
-        // track of the current position in the result array
         int index = 0;
-        
+
         // Go over each character in the input string.
         for (int counter1 = 0; counter1 < str.length(); counter1++) {
 
             // get the current character
-            char character = str.charAt(counter1);
+            final char character = str.charAt(counter1);
 
             // Check if the current character is a digit.
             if (character >= '0' && character <= '9') {
@@ -97,12 +98,13 @@ public class Blowup {
                 if (counter1 + 1 < str.length()) {
 
                     // Get the next character.
-                    char nextChar = str.charAt(counter1 + 1);
+                    final char nextChar = str.charAt(counter1 + 1);
 
                     // Get the repeat count.
-                    int repeatCount = character - '0';
+                    final int repeatCount = character - '0';
 
-                    // Repeat the next character as many times as the digit value.
+                    // Repeat the next character as many
+                    // times as the number value.
                     for (int counter2 = 0; counter2 < repeatCount; counter2++) {
 
                         // Store the next character in the result array.
@@ -128,29 +130,92 @@ public class Blowup {
     }
 
     /**
+    * This is the Shrink method.
+    *
+    * @param str3 //
+    * @return outputArray
+    */
+    public static String shrink(String str3) {
+
+        // Check if string is empty
+        if (str3.length() == 0) {
+            return "";
+        }
+
+        // Set an output array for the final string
+        final char[] outputArray = new char[str3.length() * 2];
+
+        // Set count and index
+        int count = 1;
+        int index = 0;
+
+        // Go through the characters of the string
+        // But start from the second character
+        for (int counter = 1; counter < str3.length(); counter++) {
+
+            // Get the current character
+            final char current = str3.charAt(counter);
+
+            // If the current character is the same as the previous character
+            // add to the count.
+            if (current == str3.charAt(counter - 1)) {
+                count++;
+
+            } else {
+
+                // If the current character is different
+                // than the character before it
+                // Store the count and previous character in the output array
+                outputArray[index++] = (char) ('0' + count);
+                outputArray[index++] = str3.charAt(counter - 1);
+
+                // Reset the count to 1
+                count = 1;
+            }
+        }
+
+        // Store the final count and character in the output array
+        outputArray[index] = (char) ('0' + count);
+
+        // Add to the index
+        index++;
+
+        outputArray[index] = str3.charAt(str3.length() - 1);
+
+        // Add to the index
+        index++;
+
+        // Create a new string using the output array.
+        return new String(outputArray, 0, index);
+    }
+
+    /**
     * This is the main method.
     *
     * @param args //
     * @throws Exception //
     */
-    public static void main(String[] args) throws IOException {
-    
+    public static void main(String[] args) throws Exception {
+
         // File path is passed as parameter.
         final File inputFile = new File("input.txt");
         final File outputFile = new File("output.txt");
         final Scanner sc = new Scanner(inputFile);
         final FileWriter output = new FileWriter(outputFile);
 
-        String str = sc.nextLine();
-        String str2 = sc.nextLine();
+        final String str = sc.nextLine();
+        final String str2 = sc.nextLine();
+        final String str3 = sc.nextLine();
 
-        // Call the blowup function with the input string.
-        final String blowupResult = Blowup(str);
-        final int maxRunResult = MaxRun(str2);
+        // Call the functions and assign to a variable.
+        final String blowupResult = blowup(str);
+        final int maxRunResult = maxRun(str2);
+        final String shrinkResult = shrink(str3);
 
-        // Write the output strings to the output file, separated by a newline character.
+        // Write the strings to the output file
         output.write(blowupResult + "\n");
-        output.write(Integer.toString(maxRunResult));
+        output.write(Integer.toString(maxRunResult) + "\n");
+        output.write(shrinkResult);
 
         // Close the output file.
         output.close();
