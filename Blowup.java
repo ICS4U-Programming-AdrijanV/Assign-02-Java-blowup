@@ -31,44 +31,47 @@ public final class Blowup {
     */
     public static int maxRun(String str2) {
 
-        // In case of an empty string
-        if (str2.length() == 0) {
-            return 0;
-        }
-
-        // Convert the string to an array of characters
-        char[] charArray = new char[str2.length()];
-        for (int counter = 0; counter < str2.length(); counter++) {
-            charArray[counter] = str2.charAt(counter);
-        }
-
         // Set the max run length and the current run length
-        int maxRunLength = 1;
-        int currentRunLength = 1;
+        int maxRunLength = 0;
 
-        // Go through each character in the string starting from the second one
-        for (int counter = 1; counter < charArray.length; counter++) {
+        // In case of an empty string
+        if (str2.length() > 0) {
 
-            // If the current character is the same as the previous one
-            // add one to the current run length
-            if (charArray[counter] == charArray[counter - 1]) {
-                currentRunLength++;
-            } else {
+            // Set the max run length and the current run length
+            maxRunLength = 1;
+            int currentRunLength = 1;
 
-                // update the max run length and reset the current run length
-                if (currentRunLength > maxRunLength) {
-                    maxRunLength = currentRunLength;
+            // Convert the string to an array of characters
+            final char[] charArray = new char[str2.length()];
+            for (int counter = 0; counter < str2.length(); counter++) {
+                charArray[counter] = str2.charAt(counter);
+            }
+
+            // Go through each character in the string starting
+            // from the second one
+            for (int counter = 1; counter < charArray.length; counter++) {
+
+                // If the current character is the same as the previous one
+                // add one to the current run length
+                if (charArray[counter] == charArray[counter - 1]) {
+                    currentRunLength++;
+                } else {
+
+                    // update the max run length and reset the
+                    // current run length
+                    if (currentRunLength > maxRunLength) {
+                        maxRunLength = currentRunLength;
+                    }
+                    currentRunLength = 1;
                 }
-                currentRunLength = 1;
+            }
+
+            // Update the max run length one last time
+            // in case the string ended with a run
+            if (currentRunLength > maxRunLength) {
+                maxRunLength = currentRunLength;
             }
         }
-
-        // Update the max run length one last time
-        // in case the string ended with a run
-        if (currentRunLength > maxRunLength) {
-            maxRunLength = currentRunLength;
-        }
-
         // Return the max run length
         return maxRunLength;
     }
