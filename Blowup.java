@@ -83,10 +83,6 @@ public final class Blowup {
     * @return result
     */
     public static String blowup(String str) {
-        // Check if string is empty
-        if (str.length() == 0) {
-            return "";
-        }
 
         // create an array to store the result
         final char[] result = new char[str.length() * 10];
@@ -94,43 +90,48 @@ public final class Blowup {
         // initialize an index variable to keep
         int index = 0;
 
-        // Go over each character in the input string.
-        for (int counter1 = 0; counter1 < str.length(); counter1++) {
+        // Check if string is empty
+        if (str.length() > 0) {
 
-            // get the current character
-            final char character = str.charAt(counter1);
+            // Go over each character in the input string.
+            for (int counter1 = 0; counter1 < str.length(); counter1++) {
 
-            // Check if the current character is a digit.
-            if (character >= '0' && character <= '9') {
+                // get the current character
+                final char character = str.charAt(counter1);
 
-                // Check if the digit is followed by another character.
-                if (counter1 + 1 < str.length()) {
+                // Check if the current character is a digit.
+                if (character >= '0' && character <= '9') {
 
-                    // Get the next character.
-                    final char nextChar = str.charAt(counter1 + 1);
+                    // Check if the digit is followed by another character.
+                    if (counter1 + 1 < str.length()) {
 
-                    // Get the repeat count.
-                    final int repeatCount = character - '0';
+                        // Get the next character.
+                        final char nextChar = str.charAt(counter1 + 1);
 
-                    // Repeat the next character as many
-                    // times as the number value.
-                    for (int counter2 = 0; counter2 < repeatCount; counter2++) {
+                        // Get the repeat count.
+                        final int repeatCount = character - '0';
 
-                        // Store the next character in the result array.
-                        result[index] = nextChar;
+                        // Repeat the next character as many
+                        // times as the number value.
+                        for (int counter2 = 0; counter2
+                             < repeatCount; counter2++) {
 
-                        // Add one to the index.
-                        index++;
+                            // Store the next character in the result array.
+                            result[index] = nextChar;
+
+                            // Add one to the index.
+                            index++;
+                        }
                     }
+                } else {
+
+                    // If the current character is not a digit
+                    // store it in the result array.
+                    result[index] = character;
+
+                    // Add one to the index.
+                    index++;
                 }
-            } else {
-
-                // If the current character is not a digit
-                // store it in the result array.
-                result[index] = character;
-
-                // Add one to the index.
-                index++;
             }
         }
 
@@ -146,53 +147,54 @@ public final class Blowup {
     */
     public static String shrink(String str3) {
 
-        // Check if string is empty
-        if (str3.length() == 0) {
-            return "";
-        }
-
         // Set an output array for the final string
         final char[] outputArray = new char[str3.length() * 2];
 
-        // Set count and index
-        int count = 1;
-        int index = 0;
+        // Check if string is empty
+        if (str3.length() > 0) {
 
-        // Go through the characters of the string
-        // But start from the second character
-        for (int counter = 1; counter < str3.length(); counter++) {
+            // Set count and index
+            int count = 1;
+            int index = 0;
 
-            // Get the current character
-            final char current = str3.charAt(counter);
+            // Go through the characters of the string
+            // But start from the second character
+            for (int counter = 1; counter < str3.length(); counter++) {
 
-            // If the current character is the same as the previous character
-            // add to the count.
-            if (current == str3.charAt(counter - 1)) {
-                count++;
+                // Get the current character
+                final char current = str3.charAt(counter);
 
-            } else {
+                // If the current character is
+                // the same as the previous character
+                // add to the count.
+                if (current == str3.charAt(counter - 1)) {
+                    count++;
 
-                // If the current character is different
-                // than the character before it
-                // Store the count and previous character in the output array
-                outputArray[index++] = (char) ('0' + count);
-                outputArray[index++] = str3.charAt(counter - 1);
+                } else {
 
-                // Reset the count to 1
-                count = 1;
+                    // If the current character is different
+                    // than the character before it
+                    // Store the count and previous character
+                    // in the output array
+                    outputArray[index++] = (char) ('0' + count);
+                    outputArray[index++] = str3.charAt(counter - 1);
+
+                    // Reset the count to 1
+                    count = 1;
+                }
             }
+
+            // Store the final count and character in the output array
+            outputArray[index] = (char) ('0' + count);
+
+            // Add to the index
+            index++;
+
+            outputArray[index] = str3.charAt(str3.length() - 1);
+
+            // Add to the index
+            index++;
         }
-
-        // Store the final count and character in the output array
-        outputArray[index] = (char) ('0' + count);
-
-        // Add to the index
-        index++;
-
-        outputArray[index] = str3.charAt(str3.length() - 1);
-
-        // Add to the index
-        index++;
 
         // Create a new string using the output array.
         return new String(outputArray, 0, index);
